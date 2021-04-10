@@ -1,4 +1,4 @@
-# nodejs-jwt-auth
+# nodejs-crm-carservice
 
 ## Project setup
 ```

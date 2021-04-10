@@ -26,12 +26,33 @@ db.sequelize = sequelize;
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
+db.admin = require("../models/admin.model.js")(sequelize, Sequelize);
+db.manager = require("../models/manager.model.js")(sequelize, Sequelize);
+db.master = require("../models/master.model.js")(sequelize, Sequelize);
 
 db.role.hasMany(db.user, {
     foreignKey: "role_id",
 });
 db.user.belongsTo(db.role, { 
     foreignKey: 'role_id' 
+});
+db.admin.hasMany(db.user, {
+    foreignKey: "admin_id",
+});
+db.user.belongsTo(db.admin, { 
+    foreignKey: 'admin_id' 
+});
+db.manager.hasMany(db.user, {
+    foreignKey: "manager_id",
+});
+db.user.belongsTo(db.manager, { 
+    foreignKey: 'manager_id' 
+});
+db.master.hasMany(db.user, {
+    foreignKey: "master_id",
+});
+db.user.belongsTo(db.master, { 
+    foreignKey: 'master_id' 
 });
 
 db.ROLES = ["manager", "master", "admin"];

@@ -19,6 +19,15 @@ module.exports = (sequelize, Sequelize) => {
         },
         role_id : {
             type: Sequelize.STRING
+        },
+        manager_id: {
+            type: Sequelize.STRING
+        },
+        master_id: {
+            type: Sequelize.STRING
+        },
+        admin_id: {
+            type: Sequelize.STRING
         }
     }, {
         timestamps: false
