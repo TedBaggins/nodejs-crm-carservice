@@ -1,0 +1,31 @@
+const { authJwt } = require("../middleware");
+const admins = require("../controllers/admin.controller.js");
+
+module.exports = app => {
+    app.use(function(req, res, next) {
+        res.header(
+          "Access-Control-Allow-Headers",
+          "x-access-token, Origin, Content-Type, Accept"
+        );
+        next();
+    });
+  
+    var router = require("express").Router();
+  
+    // Retrieve all admins
+    router.get("/", [authJwt.verifyToken, authJwt.isAdmin], admins.findAll);
+
+    // Retrieve a single admin with id
+    router.get("/:id", [authJwt.verifyToken, authJwt.isAdmin], admins.findOne);
+
+    // Create a new faculty
+    router.post("/", [authJwt.verifyToken, authJwt.isAdmin], admins.create);
+  
+    // Update a faculty with id
+    router.put("/:id", [authJwt.verifyToken, authJwt.isAdmin], admins.update);
+  
+    // Delete a faculty with id
+    router.delete("/:id", [authJwt.verifyToken, authJwt.isAdmin], admins.delete);
+  
+    app.use('/api/admins', [authJwt.verifyToken, authJwt.isAdmin], router);
+};
