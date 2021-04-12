@@ -1,5 +1,5 @@
 const db = require("../models");
-const Admin = db.admins;
+const Admin = db.admin;
 const Op = db.Sequelize.Op;
 const { 
     v1: uuidv1,
