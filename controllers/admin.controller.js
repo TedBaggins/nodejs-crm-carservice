@@ -8,11 +8,29 @@ const {
 
 // get all admins
 exports.findAll = (req, res) => {
-    Admin.findAll()
+    const limit = req.query.limit;
+    const offset = req.query.offset;
+    Admin.findAll({
+        offset: offset,
+        limit: limit
+        })
         .then(data => {
             res.send(data);
         })
         .catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+}
+
+exports.count = (req, res) => {
+    Admin.count()
+        .then(data => {
+            res.send({count: data});
+        })
+        .catch(err => {
+            console.log(err);
             res.status(500).send({
                 message: err.message
             });
@@ -64,6 +82,13 @@ exports.create = (req, res) => {
 // update admin by id
 exports.update = (req, res) => {
     const id = req.params.id;
+    const { fio, birthday, phone } = req.body;
+    if (!fio) {
+        res.status(400).send({
+            message: "Fio can not be empty"
+        });
+        return;
+    }
     Admin.update(req.body, {
         where: {id: id}
     }).then(num => {

@@ -15,6 +15,9 @@ module.exports = app => {
     // Retrieve all admins
     router.get("/", [authJwt.verifyToken, authJwt.isAdmin], admins.findAll);
 
+    // Retrieve admins count
+    router.get("/count", [authJwt.verifyToken, authJwt.isAdmin], admins.count);
+
     // Retrieve a single admin with id
     router.get("/:id", [authJwt.verifyToken, authJwt.isAdmin], admins.findOne);
 
