@@ -19,6 +19,8 @@ db.sequelize.sync();
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/admin.routes')(app);
+require('./routes/manager.routes')(app);
+require('./routes/master.routes')(app);
 
 app.get("/", (req, res) => {
     res.json({ message: "Server is working" });

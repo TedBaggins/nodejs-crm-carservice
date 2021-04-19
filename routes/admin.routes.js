@@ -21,13 +21,13 @@ module.exports = app => {
     // Retrieve a single admin with id
     router.get("/:id", [authJwt.verifyToken, authJwt.isAdmin], admins.findOne);
 
-    // Create a new faculty
+    // Create a new admin
     router.post("/", [authJwt.verifyToken, authJwt.isAdmin], admins.create);
   
-    // Update a faculty with id
+    // Update an admin with id
     router.put("/:id", [authJwt.verifyToken, authJwt.isAdmin], admins.update);
   
-    // Delete a faculty with id
+    // Delete an admin with id
     router.delete("/:id", [authJwt.verifyToken, authJwt.isAdmin], admins.delete);
   
     app.use('/api/admins', [authJwt.verifyToken, authJwt.isAdmin], router);
