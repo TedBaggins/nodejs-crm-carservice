@@ -29,6 +29,7 @@ db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.admin = require("../models/admin.model.js")(sequelize, Sequelize);
 db.manager = require("../models/manager.model.js")(sequelize, Sequelize);
 db.master = require("../models/master.model.js")(sequelize, Sequelize);
+db.service = require("../models/service.model.js")(sequelize, Sequelize);
 
 db.role.hasMany(db.user, {
     foreignKey: "role_id",
