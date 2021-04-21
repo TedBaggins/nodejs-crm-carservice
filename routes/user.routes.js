@@ -1,5 +1,5 @@
 const { authJwt } = require("../middleware");
-const controller = require("../controllers/user.controller");
+const users = require("../controllers/user.controller");
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -13,18 +13,31 @@ module.exports = function(app) {
     app.get(
         "/api/test/admin",
         [authJwt.verifyToken, authJwt.isAdmin],
-        controller.adminBoard
+        users.adminBoard
     );
     
     app.get(
         "/api/test/manager",
         [authJwt.verifyToken, authJwt.isManager],
-        controller.managerBoard
+        users.managerBoard
     );
     
     app.get(
         "/api/test/master",
         [authJwt.verifyToken, authJwt.isMaster],
-        controller.masterBoard
+        users.masterBoard
     );
+
+    var router = require("express").Router();
+
+    // Retrieve all users
+    router.get("/", [authJwt.verifyToken, authJwt.isAdmin], users.findAll);
+
+    // Retrieve users count
+    router.get("/count", [authJwt.verifyToken, authJwt.isAdmin], users.count);
+
+    // Retrieve a single user with id
+    router.get("/:id", [authJwt.verifyToken, authJwt.isAdmin], users.findOne);
+
+    app.use('/api/users', [authJwt.verifyToken, authJwt.isAdmin], router);
 };
