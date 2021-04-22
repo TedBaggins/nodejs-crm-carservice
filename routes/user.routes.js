@@ -39,5 +39,8 @@ module.exports = function(app) {
     // Retrieve a single user with id
     router.get("/:id", [authJwt.verifyToken, authJwt.isAdmin], users.findOne);
 
+    // Delete a user with id
+    router.delete("/:id", [authJwt.verifyToken, authJwt.isAdmin], users.delete);
+
     app.use('/api/users', [authJwt.verifyToken, authJwt.isAdmin], router);
 };
