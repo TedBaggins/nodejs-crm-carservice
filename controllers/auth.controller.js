@@ -20,16 +20,17 @@ exports.signin = (req, res) => {
     })
     .then(user => {
         if (!user) {
-            return res.status(404).send({ message: "User Not found." });
+            return res.status(400).send({ code: "101",  message: "Incorrect login or password" });
         }
         let passwordIsValid = bcrypt.compareSync(
             req.body.password,
             user.password
         );
         if (!passwordIsValid) {
-            return res.status(401).send({
+            return res.status(400).send({
                 accessToken: null,
-                message: "Invalid Password!"
+                code: "101",
+                message: "Incorrect login or password"
             });
         }
         let token = jwt.sign({ id: user.id }, config.secret, {
