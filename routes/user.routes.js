@@ -42,5 +42,8 @@ module.exports = function(app) {
     // Delete a user with id
     router.delete("/:id", [authJwt.verifyToken, authJwt.isAdmin], users.delete);
 
+     // Create a new user
+     router.post("/", [authJwt.verifyToken, authJwt.isAdmin], users.create);
+
     app.use('/api/users', [authJwt.verifyToken, authJwt.isAdmin], router);
 };

@@ -99,6 +99,45 @@ exports.delete = (req, res) => {
     });
 };
 
+// create and save new user
+exports.create = (req, res) => {
+    const { login, email, password, role_id, admin_id, manager_id, master_id } = req.body;
+    if (!login) {
+        res.status(400).send({
+            message: "Login can not be empty"
+        });
+        return;
+    }
+    if (!password) {
+        res.status(400).send({
+            message: "Password can not be empty"
+        });
+        return;
+    }
+    if (!role_id) {
+        res.status(400).send({
+            message: "Role can not be empty"
+        });
+        return;
+    }
+    console.log(`${login} ${email} ${password} ${role_id} ${admin_id} ${manager_id} ${master_id}`);
+    // const id = uuidv4();
+    // const service = {
+    //     id: id,
+    //     name: name,
+    //     price: price
+    // }
+    // Service.create(service)
+    //     .then(data => {
+    //         res.send(data);
+    //     })
+    //     .catch(err => {
+    //         res.status(500).send({
+    //             message: err.message
+    //         });
+    //     });
+};
+
 exports.adminBoard = (req, res) => {
     res.status(200).send("Admin Content.");
 };
