@@ -6,7 +6,20 @@ const {
     v4: uuidv4,
 } = require('uuid');
 
-// get all managers
+// get all managers 
+exports.findAllWithoutLimit = (req, res) => {
+    Manager.findAll()
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+}
+
+// get all managers with limit
 exports.findAll = (req, res) => {
     const limit = req.query.limit;
     const offset = req.query.offset;

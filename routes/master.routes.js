@@ -13,6 +13,9 @@ module.exports = app => {
     var router = require("express").Router();
   
     // Retrieve all masters
+    router.get("/all", [authJwt.verifyToken, authJwt.isAdmin], masters.findAllWithoutLimit);
+
+    // Retrieve all masters with limit
     router.get("/", [authJwt.verifyToken, authJwt.isAdmin], masters.findAll);
 
     // Retrieve masters count

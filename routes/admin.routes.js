@@ -13,6 +13,9 @@ module.exports = app => {
     var router = require("express").Router();
   
     // Retrieve all admins
+    router.get("/all", [authJwt.verifyToken, authJwt.isAdmin], admins.findAllWithoutLimit);
+
+    // Retrieve all admins with limit
     router.get("/", [authJwt.verifyToken, authJwt.isAdmin], admins.findAll);
 
     // Retrieve admins count
