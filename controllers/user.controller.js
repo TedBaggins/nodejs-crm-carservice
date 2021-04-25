@@ -5,6 +5,7 @@ const Admin = db.admin;
 const Manager = db.manager;
 const Master = db.master;
 const Op = db.Sequelize.Op;
+const bcrypt = require("bcryptjs");
 const { 
     v1: uuidv1,
     v4: uuidv4,
@@ -101,7 +102,7 @@ exports.delete = (req, res) => {
 
 // create and save new user
 exports.create = (req, res) => {
-    const { login, email, password, role_id, admin_id, manager_id, master_id } = req.body;
+    let { login, email, password, role_id, admin_id, manager_id, master_id } = req.body;
     if (!login) {
         res.status(400).send({
             message: "Login can not be empty"
@@ -120,22 +121,61 @@ exports.create = (req, res) => {
         });
         return;
     }
-    console.log(`${login} ${email} ${password} ${role_id} ${admin_id} ${manager_id} ${master_id}`);
-    // const id = uuidv4();
-    // const service = {
-    //     id: id,
-    //     name: name,
-    //     price: price
-    // }
-    // Service.create(service)
-    //     .then(data => {
-    //         res.send(data);
-    //     })
-    //     .catch(err => {
-    //         res.status(500).send({
-    //             message: err.message
-    //         });
-    //     });
+
+    // check for duplicate login or email
+    User.findOne({
+        where: {
+          login: login
+        }
+    })
+    .then(user => {
+        if (user) {
+            res.status(400).send({
+                code: "102",
+                message: "Login is already in use"
+            });
+            return;
+        }
+        User.findOne({
+            where: {
+                email: email
+            }
+        })
+        .then(user => {
+            if (user) {
+                res.status(400).send({
+                    code: "103",
+                    message: "Email is already in use"
+                });
+                return;
+            }
+        })
+    });
+    if (!admin_id) admin_id = null;
+    if (!manager_id) manager_id = null;
+    if (!master_id) master_id = null;
+    const id = uuidv4();
+
+    const user = {
+        id: id,
+        login: login,
+        email: email,
+        password: bcrypt.hashSync(password, 8),
+        role_id: role_id,
+        admin_id: admin_id,
+        manager_id: manager_id,
+        master_id: master_id
+    }
+
+    User.create(user)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
 };
 
 exports.adminBoard = (req, res) => {
