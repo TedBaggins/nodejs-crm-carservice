@@ -1,14 +1,15 @@
 const db = require("../models");
-const Admin = db.admin;
+const Client = db.client;
+const Car = db.car;
 const Op = db.Sequelize.Op;
 const { 
     v1: uuidv1,
     v4: uuidv4,
 } = require('uuid');
 
-// get all admins 
+// get all clients 
 exports.findAllWithoutLimit = (req, res) => {
-    Admin.findAll({
+    Client.findAll({
         order: [
             ['fio', 'ASC'],
         ],
@@ -23,11 +24,11 @@ exports.findAllWithoutLimit = (req, res) => {
         });
 }
 
-// get all admins with limit
+// get all clients with limit
 exports.findAll = (req, res) => {
     const limit = req.query.limit;
     const offset = req.query.offset;
-    Admin.findAll({
+    Client.findAll({
         offset: offset,
         limit: limit,
         order: [
@@ -44,8 +45,9 @@ exports.findAll = (req, res) => {
         });
 }
 
+// get count of clients
 exports.count = (req, res) => {
-    Admin.count()
+    Client.count()
         .then(data => {
             res.send({count: data});
         })
@@ -57,10 +59,19 @@ exports.count = (req, res) => {
         });
 }
 
-// get admin by id
+// get client by id
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    Admin.findByPk(id)
+    Client.findOne({
+        where: {
+            id: id,
+        },
+        include: [{
+                model: Car,
+                required:false
+            },
+        ],
+        })
         .then(data => {
             res.send(data);
         })
@@ -71,9 +82,9 @@ exports.findOne = (req, res) => {
         });
 }
 
-// create and save new admin
+// create and save new client
 exports.create = (req, res) => {
-    const { fio, birthday, phone } = req.body;
+    const { fio, birthday, phone, passport, driver_license } = req.body;
     if (!fio) {
         res.status(400).send({
             message: "Fio can not be empty"
@@ -82,13 +93,15 @@ exports.create = (req, res) => {
     }
 
     const id = uuidv4();
-    const admin = {
+    const client = {
         id: id,
         fio: fio,
         birthday: birthday,
-        phone: phone
+        phone: phone,
+        passport: passport,
+        driver_license: driver_license
     }
-    Admin.create(admin)
+    Client.create(client)
         .then(data => {
             res.send(data);
         })
@@ -99,57 +112,57 @@ exports.create = (req, res) => {
         });
 };
 
-// update admin by id
+// update client by id
 exports.update = (req, res) => {
     const id = req.params.id;
-    const { fio, birthday, phone } = req.body;
+    const { fio, birthday, phone, passport, driver_license } = req.body;
     if (!fio) {
         res.status(400).send({
             message: "Fio can not be empty"
         });
         return;
     }
-    Admin.update(req.body, {
+    Client.update(req.body, {
         where: {id: id}
     }).then(num => {
         if (num == 1) {
             res.send({
-                message: "Admin was updated successfully."
+                message: "Client was updated successfully."
             });
         } else {
             res.send({
-                message: `Cannot update Admin with id=${id}. Maybe Admin was not found or req.body is empty!`
+                message: `Cannot update Client with id=${id}. Maybe Client was not found or req.body is empty!`
             });
         }
     })
     .catch(err => {
         res.status(500).send({
-            message: "Error updating Admin with id=" + id
+            message: "Error updating Client with id=" + id
         });
     });
 };
 
-// remove admin by id
+// remove client by id
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    Admin.destroy({
+    Client.destroy({
         where: { id: id }
     })
     .then(num => {
         if (num == 1) {
             res.send({
-                message: "Admin was deleted successfully!"
+                message: "Client was deleted successfully!"
             });
         } else {
             res.send({
-                message: `Cannot delete Admin with id=${id}. Maybe Admin was not found!`
+                message: `Cannot delete Client with id=${id}. Maybe Client was not found!`
             });
         }
     })
     .catch(err => {
         res.status(500).send({
-            message: "Could not delete Admin with id=" + id
+            message: "Could not delete Client with id=" + id
         });
     });
 };

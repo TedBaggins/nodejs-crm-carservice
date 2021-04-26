@@ -8,7 +8,11 @@ const {
 
 // get all masters 
 exports.findAllWithoutLimit = (req, res) => {
-    Master.findAll()
+    Master.findAll({
+        order: [
+            ['fio', 'ASC'],
+        ],
+        })
         .then(data => {
             res.send(data);
         })
@@ -25,7 +29,10 @@ exports.findAll = (req, res) => {
     const offset = req.query.offset;
     Master.findAll({
         offset: offset,
-        limit: limit
+        limit: limit,
+        order: [
+            ['fio', 'ASC'],
+        ],
         })
         .then(data => {
             res.send(data);

@@ -8,7 +8,11 @@ const {
 
 // get all managers 
 exports.findAllWithoutLimit = (req, res) => {
-    Manager.findAll()
+    Manager.findAll({
+        order: [
+            ['fio', 'ASC'],
+        ],
+        })
         .then(data => {
             res.send(data);
         })
@@ -25,7 +29,10 @@ exports.findAll = (req, res) => {
     const offset = req.query.offset;
     Manager.findAll({
         offset: offset,
-        limit: limit
+        limit: limit,
+        order: [
+            ['fio', 'ASC'],
+        ],
         })
         .then(data => {
             res.send(data);

@@ -23,6 +23,8 @@ require('./routes/manager.routes')(app);
 require('./routes/master.routes')(app);
 require('./routes/service.routes')(app);
 require('./routes/role.routes')(app);
+require('./routes/client.routes')(app);
+require('./routes/car.routes')(app);
 
 app.get("/", (req, res) => {
     res.json({ message: "Server is working" });

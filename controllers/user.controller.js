@@ -34,7 +34,7 @@ exports.findAll = (req, res) => {
                 model: Master,
                 required:false
             }
-            ],
+        ],
         attributes: {exclude: ['password']}
         })
         .then(data => {
