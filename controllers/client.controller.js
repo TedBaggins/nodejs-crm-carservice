@@ -1,6 +1,7 @@
 const db = require("../models");
 const Client = db.client;
 const Car = db.car;
+const Order = db.order;
 const Op = db.Sequelize.Op;
 const { 
     v1: uuidv1,
@@ -68,6 +69,10 @@ exports.findOne = (req, res) => {
         },
         include: [{
                 model: Car,
+                required:false
+            },
+            {
+                model: Order,
                 required:false
             },
         ],
