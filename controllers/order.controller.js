@@ -5,6 +5,7 @@ const Car = db.car;
 const Manager = db.manager;
 const Master = db.master;
 const Status = db.status;
+const Service = db.service;
 const Op = db.Sequelize.Op;
 const { 
     v1: uuidv1,
@@ -80,6 +81,10 @@ exports.findOne = (req, res) => {
             },
             {
                 model: Master,
+                required: false
+            },
+            {
+                model: Service,
                 required: false
             },
         ],

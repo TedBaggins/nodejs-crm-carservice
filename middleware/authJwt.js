@@ -69,6 +69,21 @@ isMaster = (req, res, next) => {
     });
 };
 
+isAdminOrManager = (req, res, next) => {
+    User.findByPk(req.userId).then(user => {
+        Role.findByPk(user.role_id).then(role => {
+            if (role.name === 'admin' || role.name === 'manager') {
+                next();
+                return;
+            }
+            res.status(403).send({
+                message: "Require Admin or Manager Role!"
+            });
+            return;
+        });
+    });
+};
+
 isManagerOrMaster = (req, res, next) => {
     User.findByPk(req.userId).then(user => {
         Role.findByPk(user.role_id).then(role => {
@@ -89,6 +104,7 @@ const authJwt = {
     isAdmin: isAdmin,
     isManager: isManager,
     isMaster: isMaster,
-    isManagerOrMaster: isManagerOrMaster
+    isManagerOrMaster: isManagerOrMaster,
+    isAdminOrManager: isAdminOrManager
 };
 module.exports = authJwt;

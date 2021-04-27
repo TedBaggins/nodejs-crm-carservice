@@ -6,6 +6,19 @@ const {
     v4: uuidv4,
 } = require('uuid');
 
+// get all services without limit
+exports.findAllWithoutLimit = (req, res) => {
+    Service.findAll()
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+}
+
 // get all services
 exports.findAll = (req, res) => {
     const limit = req.query.limit;

@@ -13,13 +13,16 @@ module.exports = app => {
     var router = require("express").Router();
   
     // Retrieve all services
-    router.get("/", [authJwt.verifyToken, authJwt.isAdmin], services.findAll);
+    router.get("/", [authJwt.verifyToken, authJwt.isAdminOrManager], services.findAll);
+
+    // Retrieve all services without limit
+    router.get("/all", [authJwt.verifyToken, authJwt.isAdminOrManager], services.findAllWithoutLimit);
 
     // Retrieve services count
-    router.get("/count", [authJwt.verifyToken, authJwt.isAdmin], services.count);
+    router.get("/count", [authJwt.verifyToken, authJwt.isAdminOrManager], services.count);
 
     // Retrieve a single service with id
-    router.get("/:id", [authJwt.verifyToken, authJwt.isAdmin], services.findOne);
+    router.get("/:id", [authJwt.verifyToken, authJwt.isAdminOrManager], services.findOne);
 
     // Create a new service
     router.post("/", [authJwt.verifyToken, authJwt.isAdmin], services.create);
@@ -30,5 +33,5 @@ module.exports = app => {
     // Delete a service with id
     router.delete("/:id", [authJwt.verifyToken, authJwt.isAdmin], services.delete);
   
-    app.use('/api/services', [authJwt.verifyToken, authJwt.isAdmin], router);
+    app.use('/api/services', [authJwt.verifyToken, authJwt.isAdminOrManager], router);
 };

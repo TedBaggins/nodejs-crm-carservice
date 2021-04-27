@@ -35,6 +35,7 @@ db.car = require("../models/car.model.js")(sequelize, Sequelize);
 db.order = require("../models/order.model.js")(sequelize, Sequelize);
 db.status = require("../models/status.model.js")(sequelize, Sequelize);
 db.report = require("../models/report.model.js")(sequelize, Sequelize);
+db.orderservice = require("../models/orderservice.model.js")(sequelize, Sequelize);
 
 // role-user relation
 db.role.hasMany(db.user, {
@@ -119,6 +120,17 @@ db.master.hasMany(db.report, {
 });
 db.report.belongsTo(db.master, {
     foreignKey: "master_id",
+});
+// order-ordersservices-service relation
+db.order.belongsToMany(db.service, { 
+    through: db.orderservice,
+    foreignKey: "order_id",
+    otherKey: "service_id"
+});
+db.service.belongsToMany(db.order, {
+    through: db.orderservice,
+    foreignKey: "service_id",
+    otherKey: "order_id"
 });
 
 db.ROLES = ["manager", "master", "admin"];

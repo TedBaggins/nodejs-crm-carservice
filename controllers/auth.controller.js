@@ -35,7 +35,7 @@ exports.signin = (req, res) => {
         }
         let token = jwt.sign({ id: user.id }, config.secret, {
             // expiresIn: 86400 // 24 hours
-            expiresIn: 3600 // 30 min
+            expiresIn: 7200 // 1 hour
         });
 
         Role.findByPk(user.role_id).then(role => {
