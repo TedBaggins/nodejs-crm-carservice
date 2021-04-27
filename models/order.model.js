@@ -8,7 +8,6 @@ module.exports = (sequelize, Sequelize) => {
         },
         number: {
             type: Sequelize.INTEGER,
-            allowNull: false
         },
         sum: {
             type: Sequelize.INTEGER
