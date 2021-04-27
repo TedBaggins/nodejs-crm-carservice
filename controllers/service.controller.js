@@ -25,7 +25,10 @@ exports.findAll = (req, res) => {
     const offset = req.query.offset;
     Service.findAll({
         offset: offset,
-        limit: limit
+        limit: limit,
+        order: [
+            ['name', 'ASC'],
+        ],
         })
         .then(data => {
             res.send(data);
