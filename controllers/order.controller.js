@@ -210,3 +210,36 @@ exports.delete = (req, res) => {
         });
     });
 };
+
+// change order status 
+exports.changeStatus = (req, res) => {
+    const id = req.params.id;
+    const { status_id  } = req.body;
+    if (!status_id) {
+        res.status(400).send({
+            message: "Status can not be empty"
+        });
+        return;
+    }
+    Order.update({
+        status_id: status_id
+    }, {
+        where: {
+            id: id
+        }
+    }).then(num => {
+        if (num == 1) {
+            res.send({
+                message: "Order status was updated successfully."
+            });
+        } else {
+            res.send({
+                message: `Cannot update order with id=${id}.`
+            });
+        }
+    }).catch(err => {
+        res.status(500).send({
+            message: "Error updating order with id=" + id
+        });
+    });
+}

@@ -27,6 +27,7 @@ require('./routes/client.routes')(app);
 require('./routes/car.routes')(app);
 require('./routes/order.routes')(app);
 require('./routes/orderservice.routes')(app);
+require('./routes/status.routes')(app);
 
 app.get("/", (req, res) => {
     res.json({ message: "Server is working" });

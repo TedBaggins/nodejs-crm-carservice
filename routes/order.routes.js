@@ -29,6 +29,9 @@ module.exports = app => {
   
     // Delete an order with id
     router.delete("/:id", [authJwt.verifyToken, authJwt.isManagerOrMaster], orders.delete);
+
+    // change order status
+    router.put("/:id/changestatus", [authJwt.verifyToken, authJwt.isManagerOrMaster], orders.changeStatus);
   
     app.use('/api/orders', [authJwt.verifyToken, authJwt.isManagerOrMaster], router);
 };
