@@ -6,6 +6,7 @@ const Manager = db.manager;
 const Master = db.master;
 const Status = db.status;
 const Service = db.service;
+const Report = db.report;
 const Op = db.Sequelize.Op;
 const { 
     v1: uuidv1,
@@ -42,9 +43,64 @@ exports.findAll = (req, res) => {
         });
 }
 
+// get all orders whose status is different from "created"
+exports.findAllSubmitted = (req, res) => {
+    const limit = req.query.limit;
+    const offset = req.query.offset;
+    Order.findAll({
+        where: {
+            status_id: {
+                [Op.not]: '8119ff0e-c103-459f-8df6-38953c55e104'
+              }
+        },
+        offset: offset,
+        limit: limit,
+        order: [
+            ['number', 'ASC'],
+        ],
+        include: [{
+                model: Status,
+                required: false
+            },
+            {
+                model: Client,
+                required: false
+            },
+        ],
+        })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+}
+
 // get count of orders
 exports.count = (req, res) => {
     Order.count()
+        .then(data => {
+            res.send({count: data});
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send({
+                message: err.message
+            });
+        });
+}
+
+// get count of orders whose status is different from "created" 
+exports.countSubmitted = (req, res) => {
+    Order.count({
+            where: {
+                status_id: {
+                    [Op.not]: '8119ff0e-c103-459f-8df6-38953c55e104'
+                }
+            }
+        })
         .then(data => {
             res.send({count: data});
         })
@@ -85,6 +141,10 @@ exports.findOne = (req, res) => {
             },
             {
                 model: Service,
+                required: false
+            },
+            {
+                model: Report,
                 required: false
             },
         ],

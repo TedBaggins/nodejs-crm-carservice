@@ -15,8 +15,14 @@ module.exports = app => {
     // Retrieve all orders with limit
     router.get("/", [authJwt.verifyToken, authJwt.isManagerOrMaster], orders.findAll);
 
+    // Retrieve all orders whose status is different from "created"
+    router.get("/submitted", [authJwt.verifyToken, authJwt.isManagerOrMaster], orders.findAllSubmitted);
+
     // Retrieve orders count
     router.get("/count", [authJwt.verifyToken, authJwt.isManagerOrMaster], orders.count);
+
+    // Retrieve orders count whose status is different from "created"
+    router.get("/count/submitted", [authJwt.verifyToken, authJwt.isManagerOrMaster], orders.countSubmitted);
 
     // Retrieve a single order with id
     router.get("/:id", [authJwt.verifyToken, authJwt.isManagerOrMaster], orders.findOne);
