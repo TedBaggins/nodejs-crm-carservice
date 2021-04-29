@@ -99,7 +99,7 @@ exports.delete = (req, res) => {
             });
         } else {
             res.send({
-                message: `Cannot delete Report with id=${id}. Maybe Report was not found!`
+                message: `Cannot delete Report with id=${id}. Maybe Report was not found`
             });
         }
     })
