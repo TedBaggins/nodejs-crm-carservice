@@ -12,17 +12,17 @@ module.exports = (sequelize, Sequelize) => {
         },
         order_id: {
             type: Sequelize.STRING,
-            references: {
-                model: Order,
-                key: 'id'
-            }
+            // references: {
+            //     model: Order,
+            //     key: 'id'
+            // }
         },
         service_id: {
             type: Sequelize.STRING,
-            references: {
-                model: Service,
-                key: 'id'
-            }
+            // references: {
+            //     model: Service,
+            //     key: 'id'
+            // }
         },
     }, {
         timestamps: false

@@ -47,12 +47,25 @@ exports.findAll = (req, res) => {
 exports.findAllSubmitted = (req, res) => {
     const limit = req.query.limit;
     const offset = req.query.offset;
-    Order.findAll({
-        where: {
+    const status = req.query.status;
+    let whereStatement = {};
+    if (status == "submitted") {
+        whereStatement = {
             status_id: {
                 [Op.not]: '8119ff0e-c103-459f-8df6-38953c55e104'
-              }
-        },
+            }
+        }
+    } else if (status == "new") {
+        whereStatement = {
+            status_id: 'fb2bcb20-1ca7-475d-9551-ac0dca0cf67b'
+        }
+    } else if (status == "ongoing") {
+        whereStatement = {
+            status_id: '18af7a21-daa4-4eb8-a49d-73136735a330'
+        }
+    }
+    Order.findAll({
+        where: whereStatement,
         offset: offset,
         limit: limit,
         order: [
@@ -94,12 +107,25 @@ exports.count = (req, res) => {
 
 // get count of orders whose status is different from "created" 
 exports.countSubmitted = (req, res) => {
-    Order.count({
-            where: {
-                status_id: {
-                    [Op.not]: '8119ff0e-c103-459f-8df6-38953c55e104'
-                }
+    const status = req.query.status;
+    let whereStatement = {};
+    if (status == "submitted") {
+        whereStatement = {
+            status_id: {
+                [Op.not]: '8119ff0e-c103-459f-8df6-38953c55e104'
             }
+        }
+    } else if (status == "new") {
+        whereStatement = {
+            status_id: 'fb2bcb20-1ca7-475d-9551-ac0dca0cf67b'
+        }
+    } else if (status == "ongoing") {
+        whereStatement = {
+            status_id: '18af7a21-daa4-4eb8-a49d-73136735a330'
+        }
+    }
+    Order.count({
+            where: whereStatement
         })
         .then(data => {
             res.send({count: data});
