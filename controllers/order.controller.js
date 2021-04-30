@@ -307,50 +307,99 @@ exports.changeStatus = (req, res) => {
         });
         return;
     }
+
+    updateStatement = {};
     if (!master_id) {
-        Order.update({
-            status_id: status_id
-        }, {
-            where: {
-                id: id
+        if (status_id === '2065c7c8-a9f6-444c-b97b-b2137340ff26' || status_id === '8c33dee7-0ded-4df3-a2a4-913bba8d16fe') {
+            updateStatement = {
+                status_id: status_id,
+                closed_at: new Date().getTime(),
             }
-        }).then(num => {
-            if (num == 1) {
-                res.send({
-                    message: "Order status was updated successfully."
-                });
-            } else {
-                res.send({
-                    message: `Cannot update order with id=${id}.`
-                });
+        } else {
+            updateStatement = {
+                status_id: status_id,
             }
-        }).catch(err => {
-            res.status(500).send({
-                message: "Error updating order with id=" + id
-            });
-        });
+        }
     } else {
-        Order.update({
-            status_id: status_id, 
-            master_id: master_id
-        }, {
-            where: {
-                id: id
+        if (status_id === '2065c7c8-a9f6-444c-b97b-b2137340ff26' || status_id === '8c33dee7-0ded-4df3-a2a4-913bba8d16fe') {
+            updateStatement = {
+                status_id: status_id, 
+                master_id: master_id,
+                closed_at: new Date().getTime(),
             }
-        }).then(num => {
-            if (num == 1) {
-                res.send({
-                    message: "Order status was updated successfully."
-                });
-            } else {
-                res.send({
-                    message: `Cannot update order with id=${id}.`
-                });
+        } else {
+            updateStatement = {
+                status_id: status_id, 
+                master_id: master_id,
             }
-        }).catch(err => {
-            res.status(500).send({
-                message: "Error updating order with id=" + id
-            });
-        });
+        }
     }
+
+    Order.update(
+        updateStatement, {
+        where: {
+            id: id
+        }
+    }).then(num => {
+        if (num == 1) {
+            res.send({
+                message: "Order status was updated successfully."
+            });
+        } else {
+            res.send({
+                message: `Cannot update order with id=${id}.`
+            });
+        }
+    }).catch(err => {
+        res.status(500).send({
+            message: "Error updating order with id=" + id
+        });
+    });
+
+    // if (!master_id) {
+    //     Order.update({
+    //         status_id: status_id
+    //     }, {
+    //         where: {
+    //             id: id
+    //         }
+    //     }).then(num => {
+    //         if (num == 1) {
+    //             res.send({
+    //                 message: "Order status was updated successfully."
+    //             });
+    //         } else {
+    //             res.send({
+    //                 message: `Cannot update order with id=${id}.`
+    //             });
+    //         }
+    //     }).catch(err => {
+    //         res.status(500).send({
+    //             message: "Error updating order with id=" + id
+    //         });
+    //     });
+    // } else {
+    //     Order.update({
+    //         status_id: status_id, 
+    //         master_id: master_id
+    //     }, {
+    //         where: {
+    //             id: id
+    //         }
+    //     }).then(num => {
+    //         if (num == 1) {
+    //             res.send({
+    //                 message: "Order status was updated successfully."
+    //             });
+    //         } else {
+    //             res.send({
+    //                 message: `Cannot update order with id=${id}.`
+    //             });
+    //         }
+    //     }).catch(err => {
+    //         res.status(500).send({
+    //             message: "Error updating order with id=" + id
+    //         });
+    //     });
+    // }
 }
